@@ -404,22 +404,46 @@ document.addEventListener('DOMContentLoaded', () => {
             // Safari doesn't support CSS animation-timeline, and on mobile we disable complex pinning.
             // This ensures smooth fade-in animations as the user scrolls down on iPad/mobile.
             if (window.innerWidth <= 1366 || isTouch) {
-                // -- Generic Fade for Timeline --
-                const animateElements = gsap.utils.toArray('.timeline-content');
-
+                // -- Premium Mobile Timeline Animation --
+                const timelineItems = gsap.utils.toArray('.timeline-item');
                 
-                animateElements.forEach(el => {
-                    gsap.fromTo(el, 
-                        { y: 50, scale: 0.95, opacity: 0 },
-                        {
-                            scrollTrigger: {
-                                trigger: el,
-                                start: 'top 85%',
-                                toggleActions: 'play reverse play reverse'
-                            },
-                            y: 0, scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.5)'
+                timelineItems.forEach(item => {
+                    const node = item.querySelector('.timeline-node');
+                    const content = item.querySelector('.timeline-content');
+                    
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: item,
+                            start: 'top 85%',
+                            toggleActions: 'play reverse play reverse'
                         }
-                    );
+                    });
+                    
+                    if (node) {
+                        tl.fromTo(node, 
+                            { scale: 0, opacity: 0, rotation: -90 },
+                            { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: 'back.out(2)' }
+                        );
+                    }
+                    
+                    if (content) {
+                        // 3D fold-up effect for the card
+                        tl.fromTo(content,
+                            { y: 60, opacity: 0, rotationX: 15, transformPerspective: 1000 },
+                            { y: 0, opacity: 1, rotationX: 0, duration: 1.0, ease: 'power4.out' },
+                            "-=0.4"
+                        );
+                        
+                        // Stagger inner text for that extra premium feel
+                        const innerTexts = content.querySelectorAll('h3, h4, .date, p, li, .badge');
+                        if (innerTexts.length > 0) {
+                            tl.fromTo(innerTexts,
+                                { y: 20, opacity: 0 },
+                                { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power2.out' },
+                                "-=0.7"
+                            );
+                        }
+                    }
                 });
 
                 // -- Bespoke Mobile About Animation --
