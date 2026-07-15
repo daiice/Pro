@@ -193,14 +193,30 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(sec);
     });
 
-    // 4. Hero Animated Text (Rotating words)
+    // 4. Hero Animated Text (Rotating words - Premium GSAP effect)
     const words = document.querySelectorAll('.animated-words .word');
-    if (words.length > 0) {
+    if (words.length > 0 && typeof gsap !== 'undefined') {
+        // Initialize state
+        gsap.set(words, { opacity: 0, y: 30, rotationX: -90, position: 'absolute' });
+        gsap.set(words[0], { opacity: 1, y: 0, rotationX: 0, position: 'relative' });
+
         let currentWordIndex = 0;
         setInterval(() => {
-            words[currentWordIndex].classList.add('hidden');
+            const currentWord = words[currentWordIndex];
             currentWordIndex = (currentWordIndex + 1) % words.length;
-            words[currentWordIndex].classList.remove('hidden');
+            const nextWord = words[currentWordIndex];
+
+            const tl = gsap.timeline();
+            tl.to(currentWord, { 
+                opacity: 0, y: -30, rotationX: 90, duration: 0.6, ease: 'power2.in',
+                onComplete: () => gsap.set(currentWord, { position: 'absolute' }) 
+            })
+            .set(nextWord, { position: 'relative' }, "<0.3")
+            .fromTo(nextWord, 
+                { opacity: 0, y: 30, rotationX: -90 }, 
+                { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'back.out(1.5)' }, 
+                "<"
+            );
         }, 3000);
     }
 
@@ -274,9 +290,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // -- Hero Cinematic Scroll Reveal --
-            // Pin the hero and fade out elements (desktop only)
-            if (window.innerWidth > 1366 && !isTouch) {
+            // -- Responsive GSAP Animations with matchMedia --
+            let mm = gsap.matchMedia();
+
+            // 1. Desktop Only Animations (>1366px and no touch)
+            mm.add("(min-width: 1367px)", () => {
+                if (isTouch) return;
+                
+                // Hero Pinning
                 const heroTl = gsap.timeline({
                     scrollTrigger: {
                         trigger: '#home',
@@ -288,15 +309,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 heroTl.to('.main-title', { scale: 0.8, opacity: 0, y: -100, duration: 1 })
                       .to('.subtitle', { opacity: 0, y: -50, duration: 1 }, "<");
-            }
-
-            // -- About Section Parallax Storytelling --
-            if (window.innerWidth > 1366 && !isTouch) {
+                      
+                // About Parallax
                 const aboutTl = gsap.timeline({
                     scrollTrigger: {
                         trigger: '#about',
                         start: 'top top',
-                        end: '+=200%', // Increased distance so the pause is longer
+                        end: '+=200%',
                         scrub: 1,
                         pin: true
                     }
@@ -305,41 +324,34 @@ document.addEventListener('DOMContentLoaded', () => {
                        .from('.profile-wrapper', { scale: 0.5, opacity: 0, duration: 1 }, "-=0.5")
                        .from('.last-name', { x: 200, opacity: 0, duration: 1 }, "-=0.5")
                        .from('.info-card', { y: 80, opacity: 0, stagger: 0.2, duration: 1 }, "-=0.3")
-                       .to({}, { duration: 3 }); // Tripled the pause duration at the end
-            }
+                       .to({}, { duration: 3 });
+            });
 
-            // -- Experience & Education Timeline Scroll Progress --
-            // Using vanilla scroll listener instead of GSAP ScrollTrigger
-            // because pin-spacers from pinned sections corrupt ScrollTrigger's position calculations.
+            // 2. Timeline Scroll Progress (High Performance ScrollTrigger replacing requestAnimationFrame)
             const allTimelines = document.querySelectorAll('.timeline');
-            
-            function updateTimelineProgress() {
-                allTimelines.forEach(timeline => {
-                    const progress = timeline.querySelector('.timeline-progress');
-                    if (!progress) return;
-                    
-                    const rect = timeline.getBoundingClientRect();
-                    const viewportCenter = window.innerHeight / 2;
-                    
-                    // Calculate how far the viewport center has traveled through the timeline
-                    // When top of timeline = viewport center → 0%
-                    // When bottom of timeline = viewport center → 100%
-                    const timelineHeight = rect.height;
-                    const distanceFromTop = viewportCenter - rect.top;
-                    
-                    let pct = distanceFromTop / timelineHeight;
-                    pct = Math.max(0, Math.min(1, pct)); // Clamp between 0 and 1
-                    
-                    progress.style.transform = `scaleY(${pct})`;
-                });
+            allTimelines.forEach(timeline => {
+                const progress = timeline.querySelector('.timeline-progress');
+                if (progress) {
+                    gsap.fromTo(progress, 
+                        { scaleY: 0 },
+                        {
+                            scaleY: 1,
+                            ease: 'none',
+                            scrollTrigger: {
+                                trigger: timeline,
+                                start: 'top center',
+                                end: 'bottom center',
+                                scrub: true
+                            }
+                        }
+                    );
+                }
+            });
+
+            // 3. Desktop Timeline Steps (>768px and no touch)
+            mm.add("(min-width: 769px)", () => {
+                if (isTouch) return;
                 
-                requestAnimationFrame(updateTimelineProgress);
-            }
-            
-            updateTimelineProgress();
-
-            if (window.innerWidth > 768 && !isTouch) {
-
                 gsap.utils.toArray('.timeline-step').forEach((step) => {
                     const isLeft = step.classList.contains('left');
                     gsap.from(step, {
@@ -354,28 +366,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         rotateY: isLeft ? -15 : 15,
                     });
                 });
-            }
+            });
 
-            // -- Education & Experience Scroll Steps are handled by the .timeline-step loop above --
-
-            // -- Portfolio Horizontal Scroll --
-            if (true) {
+            // 4. Portfolio Horizontal Scroll (Responsive track width)
+            mm.add({
+                isPhone: "(max-width: 768px)",
+                isBigger: "(min-width: 769px)"
+            }, (context) => {
                 const track = document.querySelector(".horizontal-track");
                 const slides = gsap.utils.toArray(".h-slide");
                 
                 if (track && slides.length > 0) {
-                    // Slides are 100vw wide on mobile, 50vw on PC
-                    const slideWidth = window.innerWidth <= 768 ? 100 : 50;
+                    const slideWidth = context.conditions.isPhone ? 100 : 50;
                     const totalWidth = slides.length * slideWidth;
                     track.style.width = `${totalWidth}vw`;
 
                     const horizontalScroll = gsap.to(track, {
-                        x: () => -track.scrollWidth, // Pushes the track exactly off the left edge
+                        x: () => -track.scrollWidth,
                         ease: "none",
                         scrollTrigger: {
                             trigger: ".portfolio-section",
                             start: "top top",
-                            end: () => `+=${track.scrollWidth}`, // Match exactly the distance translated
+                            end: () => `+=${track.scrollWidth}`,
                             scrub: true,
                             pin: true,
                             anticipatePin: 1,
@@ -399,99 +411,96 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
-            }
+            });
 
-            // -- Unified Mobile & Touch Animations (Fallback for Safari/iOS) --
-            // Safari doesn't support CSS animation-timeline, and on mobile we disable complex pinning.
-            // This ensures smooth fade-in animations as the user scrolls down on iPad/mobile.
-            if (window.innerWidth <= 1366 || isTouch) {
-                // -- Premium Mobile Timeline Animation --
-                const timelineItems = gsap.utils.toArray('.timeline-item');
+            // 5. Mobile & Touch Animations (<=1366px OR touch)
+            mm.add({
+                isMobile: "(max-width: 1366px)",
+                isDesktop: "(min-width: 1367px)"
+            }, (context) => {
+                let { isMobile, isDesktop } = context.conditions;
                 
-                timelineItems.forEach(item => {
-                    const node = item.querySelector('.timeline-node');
-                    const content = item.querySelector('.timeline-content');
-                    
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: item,
-                            start: 'top 85%',
-                            toggleActions: 'play reverse play reverse'
-                        }
-                    });
-                    
-                    if (node) {
-                        tl.fromTo(node, 
-                            { scale: 0, opacity: 0, rotation: -90 },
-                            { scale: 1, opacity: 1, rotation: 0, duration: 0.5, ease: 'back.out(2)' }
-                        );
-                    }
-                    
-                    if (content) {
-                        // 3D fold-up effect for the card
-                        tl.fromTo(content,
-                            { y: 60, opacity: 0, rotationX: 15, transformPerspective: 1000 },
-                            { y: 0, opacity: 1, rotationX: 0, duration: 0.7, ease: 'power4.out' },
-                            "-=0.3"
-                        );
+                if (isMobile || (isDesktop && isTouch)) {
+                    // Premium Mobile Timeline Animation
+                    const timelineItems = gsap.utils.toArray('.timeline-item');
+                    timelineItems.forEach(item => {
+                        const node = item.querySelector('.timeline-node');
+                        const content = item.querySelector('.timeline-content');
                         
-                        // Stagger inner text for that extra premium feel
-                        const innerTexts = content.querySelectorAll('h3, h4, .date, p, li, .badge');
-                        if (innerTexts.length > 0) {
-                            tl.fromTo(innerTexts,
-                                { y: 20, opacity: 0 },
-                                { y: 0, opacity: 1, stagger: 0.05, duration: 0.5, ease: 'power2.out' },
-                                "-=0.5"
+                        const tl = gsap.timeline({
+                            scrollTrigger: {
+                                trigger: item,
+                                start: 'top 85%',
+                                toggleActions: 'play reverse play reverse'
+                            }
+                        });
+                        
+                        if (node) {
+                            tl.fromTo(node, 
+                                { scale: 0, opacity: 0, rotation: -90 },
+                                { scale: 1, opacity: 1, rotation: 0, duration: 0.5, ease: 'back.out(2)' }
                             );
                         }
-                    }
-                });
-
-                // -- Bespoke Mobile About Animation --
-                // Use a staggered timeline and trigger it when it reaches 65% of the screen
-                // This ensures it is impossible to miss and looks premium like the PC version.
-                // -- Bespoke Mobile About Animation (Individual Triggers) --
-                // By triggering on the elements themselves instead of the #about container,
-                // we guarantee they never animate while still off-screen, regardless of iPad orientation.
-                const aboutElements = [
-                    { sel: '.first-name', x: -80, y: 0, scale: 1 },
-                    { sel: '.profile-wrapper', x: 0, y: 50, scale: 0.9 },
-                    { sel: '.last-name', x: 80, y: 0, scale: 1 },
-                    { sel: '.info-card', x: 0, y: 50, scale: 1 }
-                ];
-
-                aboutElements.forEach(config => {
-                    gsap.utils.toArray(config.sel).forEach((el, index) => {
-                        gsap.fromTo(el,
-                            { x: config.x, y: config.y, scale: config.scale, opacity: 0 },
-                            {
-                                scrollTrigger: {
-                                    trigger: el,
-                                    start: 'top 85%', // Triggers when the element itself is visible
-                                    toggleActions: 'play reverse play reverse'
-                                },
-                                x: 0, y: 0, scale: 1, opacity: 1, 
-                                duration: 1.0, 
-                                delay: config.sel === '.info-card' ? index * 0.15 : 0, // Stagger cards
-                                ease: 'back.out(1.5)'
+                        
+                        if (content) {
+                            tl.fromTo(content,
+                                { y: 60, opacity: 0, rotationX: 15, transformPerspective: 1000 },
+                                { y: 0, opacity: 1, rotationX: 0, duration: 0.7, ease: 'power4.out' },
+                                "-=0.3"
+                            );
+                            
+                            const innerTexts = content.querySelectorAll('h3, h4, .date, p, li, .badge');
+                            if (innerTexts.length > 0) {
+                                tl.fromTo(innerTexts,
+                                    { y: 20, opacity: 0 },
+                                    { y: 0, opacity: 1, stagger: 0.05, duration: 0.5, ease: 'power2.out' },
+                                    "-=0.5"
+                                );
                             }
-                        );
+                        }
                     });
-                });
 
-                // Home section fade out on scroll (without pinning)
-                gsap.to('.hero-content', {
-                    scrollTrigger: {
-                        trigger: '#home',
-                        start: 'top top',
-                        end: 'bottom 50%',
-                        scrub: true
-                    },
-                    y: -50,
-                    opacity: 0,
-                    ease: 'none'
-                });
-            }
+                    // Bespoke Mobile About Animation
+                    const aboutElements = [
+                        { sel: '.first-name', x: -80, y: 0, scale: 1 },
+                        { sel: '.profile-wrapper', x: 0, y: 50, scale: 0.9 },
+                        { sel: '.last-name', x: 80, y: 0, scale: 1 },
+                        { sel: '.info-card', x: 0, y: 50, scale: 1 }
+                    ];
+
+                    aboutElements.forEach(config => {
+                        gsap.utils.toArray(config.sel).forEach((el, index) => {
+                            gsap.fromTo(el,
+                                { x: config.x, y: config.y, scale: config.scale, opacity: 0 },
+                                {
+                                    scrollTrigger: {
+                                        trigger: el,
+                                        start: 'top 85%',
+                                        toggleActions: 'play reverse play reverse'
+                                    },
+                                    x: 0, y: 0, scale: 1, opacity: 1, 
+                                    duration: 1.0, 
+                                    delay: config.sel === '.info-card' ? index * 0.15 : 0,
+                                    ease: 'back.out(1.5)'
+                                }
+                            );
+                        });
+                    });
+
+                    // Home section fade out on scroll
+                    gsap.to('.hero-content', {
+                        scrollTrigger: {
+                            trigger: '#home',
+                            start: 'top top',
+                            end: 'bottom 50%',
+                            scrub: true
+                        },
+                        y: -50,
+                        opacity: 0,
+                        ease: 'none'
+                    });
+                }
+            });
     }
 
     // 6. Background Shapes Parallax & Random Scroll Movement
