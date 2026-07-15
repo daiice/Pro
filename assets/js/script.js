@@ -340,7 +340,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (window.innerWidth > 768 && !isTouch) {
 
-                gsap.utils.toArray('.timeline-step').forEach((step, i) => {
+                gsap.utils.toArray('.timeline-step').forEach((step) => {
+                    const isLeft = step.classList.contains('left');
                     gsap.from(step, {
                         scrollTrigger: {
                             trigger: step,
@@ -348,9 +349,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             end: 'top 30%',
                             scrub: 1,
                         },
-                        x: i % 2 === 0 ? -100 : 100,
+                        x: isLeft ? -100 : 100,
                         opacity: 0,
-                        rotateY: i % 2 === 0 ? -15 : 15,
+                        rotateY: isLeft ? -15 : 15,
                     });
                 });
             }
