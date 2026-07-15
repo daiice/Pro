@@ -1348,6 +1348,12 @@ img {
         margin: 0 auto;
     }
 
+    .portfolio-title-slide, .gallery-slide {
+        width: 100vw !important;
+        padding: 0 5vw !important;
+        justify-content: center !important;
+    }
+
     .info-cards {
         align-items: stretch; /* Allow cards to span full width nicely */
         width: 100%;

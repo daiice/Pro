@@ -363,8 +363,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const slides = gsap.utils.toArray(".h-slide");
                 
                 if (track && slides.length > 0) {
-                    // Slides are 50vw wide, so multiply by 50 instead of 100
-                    const totalWidth = slides.length * 50;
+                    // Slides are 100vw wide on mobile, 50vw on PC
+                    const slideWidth = window.innerWidth <= 768 ? 100 : 50;
+                    const totalWidth = slides.length * slideWidth;
                     track.style.width = `${totalWidth}vw`;
 
                     const horizontalScroll = gsap.to(track, {
