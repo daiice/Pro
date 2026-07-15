@@ -1071,40 +1071,7 @@ img {
     padding: 0 2vw;
 }
 
-/* Native Vertical Scroll for Touch Devices (iPad, Mobile) */
-@media (hover: none) and (pointer: coarse) {
-    .horizontal-wrapper {
-        position: relative !important;
-        height: auto !important;
-        overflow: visible !important;
-        padding: 4rem 0 2rem !important;
-    }
-    .horizontal-track {
-        height: auto !important;
-        width: 100% !important; 
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 3rem !important;
-        padding: 0 1rem;
-    }
-    .h-slide {
-        width: 100% !important; 
-        height: auto !important;
-    }
-    .portfolio-title-slide {
-        width: 100% !important; 
-        padding: 0;
-        margin-bottom: 2rem;
-    }
-    .gallery-slide {
-        width: 100% !important;
-        display: flex;
-        justify-content: center;
-    }
-    .gallery-item {
-        max-width: 400px; /* Keep it from being too huge on iPad portrait */
-    }
-}
+
 
 /* Fallback/Original grid logic hidden but keeping for reference/structure */
 .gallery-grid {
