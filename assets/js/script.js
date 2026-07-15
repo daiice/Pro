@@ -413,14 +413,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     gsap.from(el, {
                         scrollTrigger: {
                             trigger: el,
-                            start: 'top 95%', // Start fading in when it enters the bottom 5% of screen
-                            end: 'center 70%', // Finish fading in when it reaches 70% from the top
-                            scrub: true // Tie animation directly to scroll position, foolproof!
+                            start: 'top 85%', // Trigger when element is 85% down the screen
+                            toggleActions: 'play none none reverse' // Play forward when scrolling down, reverse when scrolling up
                         },
                         x: xOffset,
                         y: xOffset === 0 ? yOffset : 0,
+                        scale: 0.95, // Slight scale effect for extra pop
                         opacity: 0,
-                        ease: 'none' // Scrubbing looks better with linear easing
+                        duration: 0.8,
+                        ease: 'back.out(1.5)' // Playful bouncy easing
                     });
                 });
 

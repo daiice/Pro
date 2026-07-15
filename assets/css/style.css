@@ -1355,9 +1355,17 @@ img {
    Responsive Design
    ========================================================================== */
 @media (max-width: 1024px) {
+    .about-section {
+        height: auto !important;
+        padding: var(--section-pad) !important;
+    }
+    .about-pin-wrapper {
+        height: auto !important;
+    }
     .about-grid {
         grid-template-columns: 1fr;
         text-align: center;
+        transform: translateY(0);
     }
     
     .about-left, .about-right {
