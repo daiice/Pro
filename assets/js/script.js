@@ -403,35 +403,37 @@ document.addEventListener('DOMContentLoaded', () => {
             // Safari doesn't support CSS animation-timeline, and on mobile we disable complex pinning.
             // This ensures smooth fade-in animations as the user scrolls down on iPad/mobile.
             if (window.innerWidth <= 1366 || isTouch) {
-                const animateElements = gsap.utils.toArray('.scroll-animate-up, .scroll-animate-left, .scroll-animate-right, .gallery-item, .timeline-content');
+                // -- Generic Fade for Gallery and Timeline --
+                const animateElements = gsap.utils.toArray('.gallery-item, .timeline-content');
                 animateElements.forEach(el => {
-                    let xOffset = 0;
-                    let yOffset = 50;
-                    if (el.classList.contains('scroll-animate-left') || el.closest('.timeline-item.left')) xOffset = -50;
-                    if (el.classList.contains('scroll-animate-right') || el.closest('.timeline-item.right')) xOffset = 50;
-
                     gsap.fromTo(el, 
-                        {
-                            x: xOffset,
-                            y: xOffset === 0 ? yOffset : 0,
-                            scale: 0.85, // More noticeable scale for playfulness
-                            opacity: 0
-                        },
+                        { y: 50, scale: 0.95, opacity: 0 },
                         {
                             scrollTrigger: {
                                 trigger: el,
-                                start: 'top 85%', // Trigger when element is 85% down the screen
-                                toggleActions: 'play reverse play reverse' // Playful in and out
+                                start: 'top 85%',
+                                toggleActions: 'play reverse play reverse'
                             },
-                            x: 0,
-                            y: 0,
-                            scale: 1,
-                            opacity: 1,
-                            duration: 0.8,
-                            ease: 'back.out(1.7)' // Even more playful bouncy easing
+                            y: 0, scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.5)'
                         }
                     );
                 });
+
+                // -- Bespoke Mobile About Animation --
+                // Use a staggered timeline and trigger it when it reaches 65% of the screen
+                // This ensures it is impossible to miss and looks premium like the PC version.
+                const aboutMobileTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '#about',
+                        start: 'top 65%', // Wait until the section is more central
+                        toggleActions: 'play reverse play reverse'
+                    }
+                });
+                
+                aboutMobileTl.fromTo('.first-name', { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'back.out(1.5)' })
+                             .fromTo('.profile-wrapper', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.7)' }, "-=0.4")
+                             .fromTo('.last-name', { x: 80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'back.out(1.5)' }, "-=0.4")
+                             .fromTo('.info-card', { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.15, duration: 0.6, ease: 'back.out(1.5)' }, "-=0.3");
 
                 // Home section fade out on scroll (without pinning)
                 gsap.to('.hero-content', {
