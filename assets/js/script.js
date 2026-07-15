@@ -163,18 +163,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Highlight active section based on scroll using IntersectionObserver
     const observerOptions = {
         root: null,
-        rootMargin: '0px',
-        threshold: 0.3 // Trigger when 30% of the section is visible
+        rootMargin: '-40% 0px -40% 0px', // Trigger when section is in the middle 20% of viewport
+        threshold: 0 // Avoid percentage thresholds because tall sections will never satisfy them
     };
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const currentId = entry.target.getAttribute('id');
+                // Sync top nav
                 navItems.forEach(a => {
                     a.classList.remove('active');
                     if (a.getAttribute('href') === `#${currentId}`) {
                         a.classList.add('active');
+                    }
+                });
+                // Sync side dots
+                document.querySelectorAll('.section-dots .dot').forEach(d => {
+                    d.classList.remove('active');
+                    if (d.getAttribute('href') === `#${currentId}`) {
+                        d.classList.add('active');
                     }
                 });
             }
@@ -250,21 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // -- Section Dots Navigation --
             const dots = document.querySelectorAll('.section-dots .dot');
-            const sections = document.querySelectorAll('.scroll-section');
-            
-            sections.forEach((sec, i) => {
-                ScrollTrigger.create({
-                    trigger: sec,
-                    start: 'top center',
-                    end: 'bottom center',
-                    onToggle: self => {
-                        if (self.isActive && dots[i]) {
-                            dots.forEach(d => d.classList.remove('active'));
-                            dots[i].classList.add('active');
-                        }
-                    }
-                });
-            });
 
             // Smooth scroll to section when dot is clicked
             dots.forEach(dot => {
