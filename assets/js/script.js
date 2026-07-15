@@ -510,3 +510,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+// Force ScrollTrigger to recalculate all positions after all images/fonts are fully loaded
+// This is critical for Safari and iPad where slow image loading shifts the page height
+window.addEventListener('load', () => {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 100);
+    }
+});
