@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (node) {
                         tl.fromTo(node, 
                             { scale: 0, opacity: 0, rotation: -90 },
-                            { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: 'back.out(2)' }
+                            { scale: 1, opacity: 1, rotation: 0, duration: 0.5, ease: 'back.out(2)' }
                         );
                     }
                     
@@ -430,8 +430,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         // 3D fold-up effect for the card
                         tl.fromTo(content,
                             { y: 60, opacity: 0, rotationX: 15, transformPerspective: 1000 },
-                            { y: 0, opacity: 1, rotationX: 0, duration: 1.0, ease: 'power4.out' },
-                            "-=0.4"
+                            { y: 0, opacity: 1, rotationX: 0, duration: 0.7, ease: 'power4.out' },
+                            "-=0.3"
                         );
                         
                         // Stagger inner text for that extra premium feel
@@ -439,8 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (innerTexts.length > 0) {
                             tl.fromTo(innerTexts,
                                 { y: 20, opacity: 0 },
-                                { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power2.out' },
-                                "-=0.7"
+                                { y: 0, opacity: 1, stagger: 0.05, duration: 0.5, ease: 'power2.out' },
+                                "-=0.5"
                             );
                         }
                     }
