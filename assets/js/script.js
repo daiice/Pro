@@ -430,15 +430,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const aboutMobileTl = gsap.timeline({
                     scrollTrigger: {
                         trigger: '#about',
-                        start: 'top 65%', // Wait until the section is more central
+                        start: 'top 55%', // Wait until the section is even more central (triggers later)
                         toggleActions: 'play reverse play reverse'
                     }
                 });
                 
-                aboutMobileTl.fromTo('.first-name', { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'back.out(1.5)' })
-                             .fromTo('.profile-wrapper', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.7)' }, "-=0.4")
-                             .fromTo('.last-name', { x: 80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'back.out(1.5)' }, "-=0.4")
-                             .fromTo('.info-card', { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.15, duration: 0.6, ease: 'back.out(1.5)' }, "-=0.3");
+                aboutMobileTl.fromTo('.first-name', { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: 'back.out(1.5)' })
+                             .fromTo('.profile-wrapper', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2, ease: 'back.out(1.7)' }, "-=0.8")
+                             .fromTo('.last-name', { x: 80, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: 'back.out(1.5)' }, "-=0.8")
+                             .fromTo('.info-card', { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.2, duration: 1.0, ease: 'back.out(1.5)' }, "-=0.6");
 
                 // Home section fade out on scroll (without pinning)
                 gsap.to('.hero-content', {
