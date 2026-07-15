@@ -816,6 +816,8 @@ img {
     border-radius: 20px;
     filter: brightness(0.95) contrast(1.05);
     transform: translateZ(30px);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 /* ==========================================================================
