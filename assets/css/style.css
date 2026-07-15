@@ -1354,13 +1354,15 @@ img {
 /* ==========================================================================
    Responsive Design
    ========================================================================== */
-@media (max-width: 1024px) {
+@media (max-width: 1366px), (hover: none) and (pointer: coarse) {
     .about-section {
         height: auto !important;
         padding: var(--section-pad) !important;
     }
     .about-pin-wrapper {
         height: auto !important;
+        display: block !important;
+        overflow: visible !important;
     }
     .about-grid {
         grid-template-columns: 1fr;
