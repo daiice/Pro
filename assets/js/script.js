@@ -446,229 +446,65 @@ document.addEventListener('DOMContentLoaded', () => {
             }
     }
 
-    // 6. Premium 3D WebGL Background (Three.js) - Scroll-Driven Crystal
-    const container = document.getElementById('webgl-container');
-    if (container && typeof THREE !== 'undefined') {
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x07090F, 0.002);
-
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 30;
-
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
-
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
-
-        const light1 = new THREE.PointLight(0xFF5E20, 2, 100);
-        const light2 = new THREE.PointLight(0xE02828, 2, 100);
-        const light3 = new THREE.PointLight(0x56EAC6, 2, 100);
-        scene.add(light1);
-        scene.add(light2);
-        scene.add(light3);
-
-        let detail = window.innerWidth < 768 ? 1 : 2; 
-        const geometry = new THREE.IcosahedronGeometry(12, detail);
+    // 6. Background Shapes Parallax & Random Scroll Movement
+    const shapes = document.querySelectorAll('.floating-shapes .shape, .home-shapes .shape');
+    if (shapes.length > 0 && typeof gsap !== 'undefined') {
         
-        const material = new THREE.MeshPhysicalMaterial({
-            color: 0x0B0E17,
-            metalness: 0.1,
-            roughness: 0.0,
-            transmission: 0.95,
-            thickness: 5,
-            ior: 2.4,
-            clearcoat: 1.0,
-            envMapIntensity: 1.5,
-            side: THREE.DoubleSide
-        });
-
-        const crystal = new THREE.Mesh(geometry, material);
-        scene.add(crystal);
-        
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 200;
-        const posArray = new Float32Array(particlesCount * 3);
-        const velArray = [];
-        
-        for(let i=0; i < particlesCount * 3; i+=3) {
-            posArray[i] = 0;
-            posArray[i+1] = 0;
-            posArray[i+2] = 0;
-            
-            velArray.push({
-                x: (Math.random() - 0.5) * 2,
-                y: (Math.random() - 0.5) * 2,
-                z: (Math.random() - 0.5) * 2
-            });
-        }
-        
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.5,
-            color: 0xFF5E20,
-            transparent: true,
-            opacity: 0,
-            blending: THREE.AdditiveBlending
-        });
-        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particles);
-
-        let mouseX = 0;
-        let mouseY = 0;
-        let targetX = 0;
-        let targetY = 0;
-        let scrollProgress = 0;
-
-        let bgMouseX = 0;
-        let bgMouseY = 0;
-        let bgScrollY = window.scrollY;
-
-        window.addEventListener('mousemove', (event) => {
-            // Keep the WebGL mouse tracking
-            mouseX = (event.clientX - window.innerWidth / 2) * 0.05;
-            mouseY = (event.clientY - window.innerHeight / 2) * 0.05;
-            
-            // Background shapes mouse tracking
-            bgMouseX = event.clientX - window.innerWidth / 2;
-            bgMouseY = event.clientY - window.innerHeight / 2;
-        });
-
-        window.addEventListener('scroll', () => {
-            bgScrollY = window.scrollY;
-        });
-
-        function updateBackgroundShapes() {
-            const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-            const scrollProgress = window.scrollY / maxScroll;
-            // Center the progress (-0.5 to 0.5) so shapes hover around their original CSS position
-            const centeredProgress = scrollProgress - 0.5;
-
-            document.querySelectorAll('.floating-shapes .shape').forEach(shape => {
+        // Setup random scroll movement
+        if (typeof ScrollTrigger !== 'undefined') {
+            shapes.forEach((shape, index) => {
                 const speed = parseFloat(shape.getAttribute('data-speed')) || 1;
-                const x = (bgMouseX * speed * -0.05);
-                const y = (bgMouseY * speed * -0.05) + (centeredProgress * speed * -500);
-                shape.style.translate = `${x}px ${y}px`;
-            });
-
-            // Home shapes (position: absolute, scrolls naturally, only needs mouse parallax + slight scroll)
-            document.querySelectorAll('.home-shapes .shape').forEach(shape => {
-                const speed = parseFloat(shape.getAttribute('data-speed')) || 1;
-                const x = (bgMouseX * speed * -0.05);
-                // Just a slight parallax against scrollY since it starts at 0 here
-                const y = (bgMouseY * speed * -0.05) + (window.scrollY * speed * -0.1);
-                shape.style.translate = `${x}px ${y}px`;
-            });
-            requestAnimationFrame(updateBackgroundShapes);
-        }
-        updateBackgroundShapes();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        
-        window.addEventListener('scroll', () => {
-            scrollProgress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-        });
-
-        const clock = new THREE.Clock();
-        let exploded = false;
-        
-        const animate = () => {
-            requestAnimationFrame(animate);
-            const time = clock.getElapsedTime();
-
-            crystal.rotation.y = time * 0.2 + scrollProgress * Math.PI * 4;
-            crystal.rotation.x = time * 0.1 + scrollProgress * Math.PI * 2;
-            
-            if (window.innerWidth > 768) {
-                if (scrollProgress < 0.15) {
-                    crystal.position.set(0, 0, 0);
-                    crystal.scale.setScalar(1);
-                    material.color.setHex(0x0B0E17);
-                } else if (scrollProgress < 0.35) {
-                    const p = (scrollProgress - 0.15) / 0.2;
-                    crystal.position.set(gsap.utils.interpolate(0, -15, p), gsap.utils.interpolate(0, 5, p), 0);
-                    crystal.scale.setScalar(gsap.utils.interpolate(1, 0.6, p));
-                    material.color.setHex(0xFF5E20);
-                } else if (scrollProgress < 0.6) {
-                    const p = (scrollProgress - 0.35) / 0.25;
-                    crystal.position.set(gsap.utils.interpolate(-15, 15, p), gsap.utils.interpolate(5, -5, p), 0);
-                    crystal.scale.setScalar(0.6);
-                    material.color.setHex(0xE02828);
-                } else if (scrollProgress < 0.75) {
-                    const p = (scrollProgress - 0.6) / 0.15;
-                    crystal.position.set(gsap.utils.interpolate(15, -10, p), gsap.utils.interpolate(-5, -5, p), 0);
-                    crystal.scale.setScalar(gsap.utils.interpolate(0.6, 0.4, p));
-                    material.color.setHex(0x56EAC6);
-                } else if (scrollProgress < 0.9) {
-                    const p = (scrollProgress - 0.75) / 0.15;
-                    crystal.position.set(gsap.utils.interpolate(-10, 0, p), gsap.utils.interpolate(-5, 0, p), 0);
-                    crystal.scale.setScalar(gsap.utils.interpolate(0.4, 0.8, p));
-                    material.color.setHex(0x0B0E17); 
-                    crystal.scale.multiplyScalar(1 + Math.sin(time * 5) * 0.05);
-                }
-            } else {
-                crystal.position.set(0, 0, 0);
-                crystal.scale.setScalar(1);
-            }
-
-            if (scrollProgress > 0.9 && !exploded) {
-                exploded = true;
-                gsap.to(crystal.scale, { x: 0, y: 0, z: 0, duration: 0.5, ease: "back.in(1.7)" });
-                gsap.to(particlesMaterial, { opacity: 1, duration: 0.2 });
-            } else if (scrollProgress <= 0.9 && exploded) {
-                exploded = false;
-                gsap.to(crystal.scale, { x: 0.8, y: 0.8, z: 0.8, duration: 0.8, ease: "elastic.out(1, 0.3)" });
-                gsap.to(particlesMaterial, { opacity: 0, duration: 0.5 });
                 
-                const positions = particles.geometry.attributes.position.array;
-                for(let i=0; i < positions.length; i++) {
-                    positions[i] = crystal.position.toArray()[i%3];
-                }
-                particles.geometry.attributes.position.needsUpdate = true;
+                // Randomize end positions for a chaotic, multidirectional feel
+                // Alternating directions based on index to spread them out
+                const randomX = (index % 2 === 0 ? 1 : -1) * (Math.random() * 300 + 100) * speed;
+                const randomY = (index % 3 === 0 ? 1 : -1) * (Math.random() * 500 + 300) * speed;
+                const randomRot = (Math.random() - 0.5) * 720 * speed;
+                const randomScale = 1 + (Math.random() - 0.5) * 0.5;
+
+                gsap.to(shape, {
+                    x: randomX,
+                    y: randomY,
+                    rotation: randomRot,
+                    scale: randomScale,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: document.documentElement,
+                        start: "top top",
+                        end: "max",
+                        scrub: 1.5 // Smooth scrubbing
+                    }
+                });
+            });
+        }
+
+        // Mouse Parallax (using independent translate property so it doesn't conflict with GSAP's transform)
+        if (!isTouch) {
+            let targetX = 0;
+            let targetY = 0;
+            let currentX = 0;
+            let currentY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                targetX = (e.clientX - window.innerWidth / 2) * -0.05;
+                targetY = (e.clientY - window.innerHeight / 2) * -0.05;
+            });
+
+            // Smooth interpolation loop for mouse parallax
+            function updateMouseParallax() {
+                currentX += (targetX - currentX) * 0.1;
+                currentY += (targetY - currentY) * 0.1;
+
+                shapes.forEach(shape => {
+                    const speed = parseFloat(shape.getAttribute('data-speed')) || 1;
+                    const moveX = currentX * speed;
+                    const moveY = currentY * speed;
+                    // Using CSS translate property to keep it independent of GSAP transforms
+                    shape.style.translate = `${moveX}px ${moveY}px`;
+                });
+                requestAnimationFrame(updateMouseParallax);
             }
-
-            if (exploded) {
-                const positions = particles.geometry.attributes.position.array;
-                for(let i=0; i < particlesCount; i++) {
-                    const i3 = i * 3;
-                    positions[i3] += velArray[i].x * 0.5;
-                    positions[i3+1] += velArray[i].y * 0.5;
-                    positions[i3+2] += velArray[i].z * 0.5;
-                }
-                particles.geometry.attributes.position.needsUpdate = true;
-                particles.rotation.y = time * 0.1;
-            } else {
-                const positions = particles.geometry.attributes.position.array;
-                for(let i=0; i < particlesCount * 3; i+=3) {
-                    positions[i] = crystal.position.x;
-                    positions[i+1] = crystal.position.y;
-                    positions[i+2] = crystal.position.z;
-                }
-                particles.geometry.attributes.position.needsUpdate = true;
-            }
-
-            targetX += (mouseX - targetX) * 0.05;
-            targetY += (mouseY - targetY) * 0.05;
-            camera.position.x += (targetX - camera.position.x) * 0.05;
-            camera.position.y += (-targetY - camera.position.y) * 0.05;
-            camera.lookAt(scene.position);
-
-            light1.position.x = Math.sin(time * 0.5) * 15;
-            light1.position.z = Math.cos(time * 0.5) * 15;
-            light2.position.y = Math.sin(time * 0.7) * 15;
-            light2.position.z = Math.cos(time * 0.7) * 15;
-            light3.position.x = Math.sin(time * 0.3) * -15;
-            light3.position.y = Math.cos(time * 0.3) * -15;
-
-            renderer.render(scene, camera);
-        };
-        
-        animate();
+            updateMouseParallax();
+        }
     }
 });
