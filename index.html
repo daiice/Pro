@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dai Kittipanvoragul — Designer & Developer Portfolio</title>
+    <meta name="description" content="Portfolio of Dai Kittipanvoragul, a Designer and Developer with expertise in IT support, drafting, and UI design.">
+    <meta name="robots" content="max-image-preview:large" />
+    <meta name="view-transition" content="same-origin">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Mitr:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Lenis Smooth Scroll CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css?v=9">
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+    
+    <!-- Section Dots Navigation -->
+    <nav class="section-dots">
+        <a href="#home" class="dot active" data-section="hero"></a>
+        <a href="#about" class="dot" data-section="about"></a>
+        <a href="#experience" class="dot" data-section="experience"></a>
+        <a href="#education" class="dot" data-section="education"></a>
+        <a href="#portfolio" class="dot" data-section="portfolio"></a>
+    </nav>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Global Floating Background Shapes -->
+    <div class="floating-shapes">
+        <!-- Left Side -->
+        <div class="shape circle pos-tl" data-speed="2"></div>
+        <div class="shape square pos-bl" data-speed="-1.5"></div>
+        
+        <!-- Right Side -->
+        <div class="shape square pos-tr" data-speed="1.8"></div>
+        <div class="shape circle pos-br" data-speed="-2.5"></div>
+        
+        <!-- Center/Bottom -->
+        <div class="shape triangle pos-cb" data-speed="1.2"></div>
+    </div>
+
+    <!-- Cinematic Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Custom Cursor (Desktop only) -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline">
+        <span class="cursor-text">VIEW</span>
+    </div>
+
+    <!-- 3D WebGL Container -->
+    <div id="webgl-container"></div>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="#home" class="logo magnetic-btn">
+                <img src="./assets/images/2025-05-Mr.png" alt="Daiice Logo">
+            </a>
+            
+            <button class="menu-toggle" aria-label="Toggle Menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <nav class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#portfolio" class="nav-link">Portfolio</a>
+            </nav>
+
+            <a href="./assets/documents/2025-05-Resume_Dai-Kittipanvoragul_English.pdf" target="_blank" class="btn btn-primary resume-btn magnetic-btn">Get My Resume</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="hero scroll-section" data-section="hero">
+            <div class="hero-pin-wrapper">
+            
+            <!-- Shapes specific to Home section (will scroll away) -->
+            <div class="home-shapes">
+                <div class="shape circle pos-home-tr" data-speed="1.5"></div>
+            </div>
+
+            <div class="hero-content" data-speed="0.5">
+                <h3 class="welcome-text">
+                    <span class="static-text">Welcome to my</span>
+                    <span class="animated-words">
+                        <span class="word">website!</span>
+                        <span class="word hidden">portfolio</span>
+                    </span>
+                </h3>
+                <h1 class="main-title balanced-text" id="split-title">Daiice.DK</h1>
+                <h2 class="subtitle typewriter balanced-text">Designer / Developer</h2>
+            </div>
+
+            <div class="scroll-indicator">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section scroll-section" data-section="about">
+            <div class="about-pin-wrapper">
+            <div class="about-container">
+                <div class="about-grid">
+                    <div class="about-left scroll-animate-left">
+                        <h2 class="first-name reveal-text">Dai</h2>
+                    </div>
+                    
+                    <div class="about-center scroll-animate-up">
+                        <div class="profile-wrapper" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5">
+                            <div class="profile-glow"></div>
+                            <!-- Updated Profile Image -->
+                            <img src="./assets/images/1758203698259.jpg" alt="Dai Kittipanvoragul" class="profile-image">
+                        </div>
+                    </div>
+
+                    <div class="about-right scroll-animate-right">
+                        <h2 class="last-name reveal-text">Kittipanvoragul</h2>
+                        
+                        <div class="info-cards">
+                            <div class="glass-card info-card" data-tilt data-tilt-max="10" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                                <strong>Date of Birth</strong>
+                                <span>24 January 1996</span>
+                            </div>
+                            <div class="glass-card info-card" data-tilt data-tilt-max="10" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                                <strong>Phone</strong>
+                                <span><a href="tel:0614424477">061 442 4477</a></span>
+                            </div>
+                            <div class="glass-card info-card" data-tilt data-tilt-max="10" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                                <strong>Email</strong>
+                                <span>
+                                    <a href="mailto:daiice.dk@gmail.com">daiice.dk@gmail.com</a><br>
+                                    <a href="mailto:daiice.dk@hotmail.com">daiice.dk@hotmail.com</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="timeline-section scroll-section" data-section="experience">
+            <div class="timeline-pin-wrapper">
+            <div class="container">
+                <h2 class="section-title balanced-text scroll-animate-up">Experience</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-bar">
+                        <div class="timeline-progress"></div>
+                    </div>
+
+                    <div class="timeline-item left timeline-step" data-step="1">
+                        <div class="timeline-node">
+                            <img src="./assets/images/2025-05-compass-white.webp" alt="Icon" width="30">
+                        </div>
+                        <div class="timeline-content glass-card" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.1">
+                            <h3 class="balanced-text">Operations & Technology Coordinator</h3>
+                            <h4 class="balanced-text">Kitcharoen Lansak Limited Partnership – Ice Factory</h4>
+                            <p class="location pretty-text">Uthai Thani, Thailand</p>
+                            <span class="date">2020 – Present</span>
+                            <ul>
+                                <li class="pretty-text">Managed daily operations of a small-scale ice manufacturing plant.</li>
+                                <li class="pretty-text">Digitized accounting system using Microsoft Excel to replace manual bookkeeping.</li>
+                                <li class="pretty-text">Implemented GPS trackers in delivery vehicles to monitor routes and prevent misuse.</li>
+                                <li class="pretty-text">Implemented IoT technology in the production alert system to automatically notify start times, reduce errors, and improve operational efficiency.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item right timeline-step" data-step="2">
+                        <div class="timeline-node">
+                            <img src="./assets/images/2025-05-tiny-flower-shape.png" alt="Icon" width="30">
+                        </div>
+                        <div class="timeline-content glass-card" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.1">
+                            <h3 class="balanced-text">Internship - IT Support</h3>
+                            <h4 class="balanced-text">CAT Telecom Public Company Limited</h4>
+                            <span class="date">March – May 2015</span>
+                            <ul>
+                                <li class="pretty-text">Maintained computer hardware and software systems.</li>
+                                <li class="pretty-text">Diagnosed and repaired issues.</li>
+                                <li class="pretty-text">Upgraded computer systems.</li>
+                                <li class="pretty-text">Supported the customer service department.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item left timeline-step" data-step="3">
+                        <div class="timeline-node">
+                            <img src="./assets/images/2025-05-Flower-Shape-150x150.png" alt="Icon" width="30">
+                        </div>
+                        <div class="timeline-content glass-card" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.1">
+                            <h3 class="balanced-text">Draftsman (Part-time)</h3>
+                            <h4 class="balanced-text">SEC Design Co., Ltd.</h4>
+                            <span class="date">October 2012 – March 2013</span>
+                            <ul>
+                                <li class="pretty-text">Created HVAC and ventilation system blueprints using AutoCAD from engineer drafts.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="education-section scroll-section" data-section="education">
+            <div class="education-pin-wrapper">
+            <div class="container">
+                <h2 class="section-title balanced-text scroll-animate-up">Education</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-bar">
+                        <div class="timeline-progress"></div>
+                    </div>
+
+                    <div class="timeline-item right timeline-step" data-step="1">
+                        <div class="timeline-node">
+                            <img src="./assets/images/2025-05-compass-white.webp" alt="Icon" width="30">
+                        </div>
+                        <div class="timeline-content glass-card" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.1">
+                            <h3 class="balanced-text">University of the Thai Chamber of Commerce</h3>
+                            <span class="date">2016 – 2020</span>
+                            <div class="education-details">
+                                <p class="pretty-text">Bachelor of Science in Information and Communication Technology (ICT)</p>
+                                <div class="badges">
+                                    <span class="badge gradient-border">GPA: 3.26</span>
+                                    <span class="badge gradient-border">Second Class Honors</span>
+                                </div>
+                                <div class="project-info">
+                                    <p class="pretty-text"><strong>Graduate Project:</strong> The Development of Smart Hydroponic Farm Using Internet of Things (IoT)</p>
+                                    <p class="pretty-text"><strong>Conference Paper:</strong> Website Development for Tourist Services Street Food Tours — Presented at ASTC2019</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item left timeline-step" data-step="2">
+                        <div class="timeline-node">
+                            <img src="./assets/images/2025-05-thick-flower-shape.png" alt="Icon" width="30">
+                        </div>
+                        <div class="timeline-content glass-card" data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.1">
+                            <h3 class="balanced-text">SIBA College</h3>
+                            <span class="date">2013 – 2015</span>
+                            <div class="education-details">
+                                <p class="pretty-text">Vocational Certificate in Business Computer</p>
+                                <div class="badges">
+                                    <span class="badge gradient-border">GPA: 3.65</span>
+                                    <span class="badge highlight">🥇 Gold Medal: Webpage Design Competition</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section (Horizontal Scroll) -->
+        <section id="portfolio" class="portfolio-section scroll-section" data-section="portfolio">
+            <div class="horizontal-wrapper">
+                <div class="horizontal-track">
+                    
+                    <!-- Giant Background Watermark -->
+                    <div class="portfolio-watermark">PORTFOLIO</div>
+
+                    <!-- Title Slide -->
+                    <div class="h-slide portfolio-title-slide">
+                        <div class="container">
+                            <h2 class="section-title text-gradient balanced-text" data-no-split>Selected Works</h2>
+                            <p class="pretty-text" style="margin-top: 1rem; max-width: 400px;">A collection of my recent projects, featuring web design, UI/UX, and development.</p>
+                        </div>
+                    </div>
+                
+                    <!-- Gallery Slides -->
+                    <div class="h-slide gallery-slide">
+                        <div class="gallery-item glass-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5" data-tilt-scale="1.05">
+                        <div class="gallery-image">
+                            <img src="./assets/images/2025-05-G1.jpg" alt="Website Design">
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4 class="balanced-text">Website Design & Developer</h4>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <div class="h-slide gallery-slide">
+                        <div class="gallery-item glass-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5" data-tilt-scale="1.05">
+                        <div class="gallery-image">
+                            <img src="./assets/images/2025-05-G2.jpg" alt="Website Design">
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4 class="balanced-text">Website Design & Developer</h4>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <div class="h-slide gallery-slide">
+                        <div class="gallery-item glass-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5" data-tilt-scale="1.05">
+                        <div class="gallery-image">
+                            <img src="./assets/images/2025-05-G3.png" alt="App UI Design">
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4 class="balanced-text">App UI Design</h4>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <div class="h-slide gallery-slide">
+                        <div class="gallery-item glass-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5" data-tilt-scale="1.05">
+                        <div class="gallery-image">
+                            <img src="./assets/images/2025-05-G4.png" alt="Artwork Design">
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4 class="balanced-text">Artwork Design</h4>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <div class="h-slide gallery-slide">
+                        <div class="gallery-item glass-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5" data-tilt-scale="1.05">
+                        <div class="gallery-image">
+                            <img src="./assets/images/2025-05-G5.png" alt="Artwork Design">
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4 class="balanced-text">Artwork Design</h4>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <div class="h-slide gallery-slide">
+                        <div class="gallery-item glass-card cta-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5" data-tilt-scale="1.05">
+                        <div class="gallery-image">
+                            <img src="./assets/images/2025-05-G6.jpg" alt="Let's Work Together">
+                        </div>
+                        <div class="gallery-overlay">
+                            <h4 class="balanced-text">Let's Work Together</h4>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-cta">
+                <h2 class="text-gradient balanced-text">Ready to start a project?</h2>
+                <div class="footer-actions">
+                    <a href="mailto:daiice.dk@gmail.com" class="btn btn-secondary magnetic-btn">Message Me</a>
+                    <a href="./assets/documents/2025-05-Resume_Dai-Kittipanvoragul_English.pdf" target="_blank" class="btn btn-primary magnetic-btn">Get My Resume</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-logo magnetic-btn">
+                    <img src="./assets/images/2025-05-Mr.png" alt="Daiice Logo">
+                </div>
+                <div class="copyright">
+                    <p class="pretty-text">Copyright &copy; 2025 All rights reserved | Design by Dai Kittipanvoragul</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Libraries -->
+    <!-- Three.js for 3D Premium Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    
+    <!-- Lenis for Smooth Scrolling -->
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+    
+    <!-- SplitType for Cinematic Text -->
+    <script src="https://unpkg.com/split-type"></script>
+
+    <!-- GSAP is still used for complex hero animations and particles if needed -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Vanilla Tilt for 3D cards -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="./assets/js/script.js?v=13"></script>
+</body>
+</html>
