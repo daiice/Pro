@@ -424,18 +424,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 // -- Bespoke Mobile About Animation --
                 // Use a staggered timeline and trigger it when it reaches 65% of the screen
                 // This ensures it is impossible to miss and looks premium like the PC version.
-                const aboutMobileTl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: '#about',
-                        start: 'top 55%', // Wait until the section is even more central (triggers later)
-                        toggleActions: 'play reverse play reverse'
-                    }
+                // -- Bespoke Mobile About Animation (Individual Triggers) --
+                // By triggering on the elements themselves instead of the #about container,
+                // we guarantee they never animate while still off-screen, regardless of iPad orientation.
+                const aboutElements = [
+                    { sel: '.first-name', x: -80, y: 0, scale: 1 },
+                    { sel: '.profile-wrapper', x: 0, y: 50, scale: 0.9 },
+                    { sel: '.last-name', x: 80, y: 0, scale: 1 },
+                    { sel: '.info-card', x: 0, y: 50, scale: 1 }
+                ];
+
+                aboutElements.forEach(config => {
+                    gsap.utils.toArray(config.sel).forEach((el, index) => {
+                        gsap.fromTo(el,
+                            { x: config.x, y: config.y, scale: config.scale, opacity: 0 },
+                            {
+                                scrollTrigger: {
+                                    trigger: el,
+                                    start: 'top 85%', // Triggers when the element itself is visible
+                                    toggleActions: 'play reverse play reverse'
+                                },
+                                x: 0, y: 0, scale: 1, opacity: 1, 
+                                duration: 1.0, 
+                                delay: config.sel === '.info-card' ? index * 0.15 : 0, // Stagger cards
+                                ease: 'back.out(1.5)'
+                            }
+                        );
+                    });
                 });
-                
-                aboutMobileTl.fromTo('.first-name', { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: 'back.out(1.5)' })
-                             .fromTo('.profile-wrapper', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2, ease: 'back.out(1.7)' }, "-=0.8")
-                             .fromTo('.last-name', { x: 80, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: 'back.out(1.5)' }, "-=0.8")
-                             .fromTo('.info-card', { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.2, duration: 1.0, ease: 'back.out(1.5)' }, "-=0.6");
 
                 // Home section fade out on scroll (without pinning)
                 gsap.to('.hero-content', {
