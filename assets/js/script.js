@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // -- Education & Experience Scroll Steps are handled by the .timeline-step loop above --
 
             // -- Portfolio Horizontal Scroll --
-            if (window.innerWidth > 768) {
+            if (true) {
                 const track = document.querySelector(".horizontal-track");
                 const slides = gsap.utils.toArray(".h-slide");
                 
@@ -405,10 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.innerWidth <= 1366 || isTouch) {
                 // -- Generic Fade for Timeline --
                 const animateElements = gsap.utils.toArray('.timeline-content');
-                // Only fade gallery items vertically if horizontal scroll is disabled (mobile)
-                if (window.innerWidth <= 768) {
-                    animateElements.push(...gsap.utils.toArray('.gallery-item'));
-                }
+
                 
                 animateElements.forEach(el => {
                     gsap.fromTo(el, 

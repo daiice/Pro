@@ -1485,38 +1485,7 @@ img {
         position: static;
     }
 
-    /* Horizontal to Vertical for Mobile */
-    .portfolio-section {
-        height: auto !important;
-        padding: var(--section-pad);
-    }
-    .horizontal-wrapper {
-        position: relative;
-        height: auto;
-        overflow: visible;
-    }
-    .horizontal-track {
-        display: flex;
-        flex-direction: column;
-        width: 100% !important;
-        transform: none !important;
-    }
-    .h-slide {
-        width: 100%;
-        height: auto;
-        padding: 2rem 0;
-        justify-content: center;
-    }
-    .portfolio-title-slide {
-        width: 100%;
-        padding: 0;
-        justify-content: center;
-        text-align: center;
-    }
-    .gallery-slide {
-        width: 100%;
-        padding: 1rem;
-    }
+
 
     .section-dots {
         display: none;
