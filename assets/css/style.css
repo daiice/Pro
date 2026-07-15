@@ -1369,6 +1369,9 @@ img {
         transform: translateY(0);
     }
     
+}
+
+@media (max-width: 768px) {
     .first-name, .last-name {
         font-size: 4rem;
         transform: none;
@@ -1381,9 +1384,7 @@ img {
     .info-cards {
         align-items: center;
     }
-}
 
-@media (max-width: 768px) {
     .about-grid {
         grid-template-columns: 1fr;
         text-align: center;
